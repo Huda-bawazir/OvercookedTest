@@ -1,32 +1,132 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using System; 
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private GameInput gameInput;
-    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private LayerMask countersLayerMask;
 
     //making a local field to store id the player is walking
-    //always calmel case foe fields
+    //always camel case for fields
     private bool isWalking;
-    
+    //vector because...direction
+    private Vector3 lastInteractDirection; 
+   
+    private void Start()
+    {
+        gameInput.OnInteractAction += GameInput_OnInteractAction;//Event handlers list
+
+    }
+
+    private void GameInput_OnInteractAction(object sender, EventArgs e)
+    {
+        //Create a vector that takes in the player input
+        //create a raycast the detects a collider from the player's tranform position and get information back from the raycast. 
+        Vector2 inputVector2 = gameInput.GetMovementVector();
+
+        Vector3 moveDirection = new Vector3(inputVector2.x, 0f, inputVector2.y);
+
+        float interactionDistance = 2f;
+
+        //RayCast always returns a boolean so in order to get the object's refrence, we must use a different kind dof raycast
+        //A raycats with an out perameter called RaycastHit. They out keyword means it is an output Perameter it can return more than one value from a function
+        //when the move direction is zero, we will be firing a Raycats towards no direction at all causing it not to hit anything 
+        //because of that we need to keep track of the last moved direction. 
+        if (moveDirection != Vector3.zero)
+        {
+            lastInteractDirection = moveDirection;
+        }
+        //raycast towards any object with a collider 
+        //set a game object to a certain layer and use a layer mask, then the raycast will hit objects in that layer. 
+        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, interactionDistance, countersLayerMask))
+        {
+            //when we find out that we hit something, the next best thing to do is to identify that thing/transform. 
+            Debug.Log(raycastHit.transform);
+
+            //Try Get Componenet takes the type of component and it basically does the same thing as a rayCast (It returns a boolean) 
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                //if true then the object has that component: ClearCounter. 
+                clearCounter.Interact();
+            }
+        }
+
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Update()
     {
-        //getting the input vector from the GameInout script 
-        Vector2 inputVector2 = gameInput.GetMovementVector(); 
+        HandleMovement(); 
+        HandleInteractions();
+       
+    }
+
+    //public because it is going to be accessed from another script (player)
+    //here we are gonna resturn if the player is walking
+    // for functions we have pascal case
+    public bool IsWalking()
+    {
+        return isWalking; 
+    }
+
+    private void HandleInteractions()
+    {
+        //Create a vector that takes in the player input
+        //create a raycast the detects a collider from the player's tranform position and get information back from the raycast. 
+        Vector2 inputVector2 = gameInput.GetMovementVector();
+        
+        Vector3 moveDirection = new Vector3(inputVector2.x, 0f, inputVector2.y);
+
+        float interactionDistance = 2f; 
+
+        //RayCast always returns a boolean so in order to get the object's refrence, we must use a different kind dof raycast
+        //A raycats with an out perameter called RaycastHit. They out keyword means it is an output Perameter it can return more than one value from a function
+        //when the move direction is zero, we will be firing a Raycats towards no direction at all causing it not to hit anything 
+        //because of that we need to keep track of the last moved direction. 
+        if(moveDirection !=  Vector3.zero)
+        {
+            lastInteractDirection = moveDirection; 
+        }
+           //raycast towards any object with a collider 
+           //set a game object to a certain layer and use a layer mask, then the raycast will hit objects in that layer. 
+        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, interactionDistance, countersLayerMask))
+        {
+            //when we find out that we hit something, the next best thing to do is to identify that thing/transform. 
+            Debug.Log(raycastHit.transform);
+           
+            //Try Get Componenet takes the type of component and it basically does the same thing as a rayCast (It returns a boolean) 
+            if(raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) 
+            {
+              //if true then the object has that component: ClearCounter. 
+              clearCounter.Interact();
+            }
+
+
+        } else
+        {
+            Debug.Log("--"); 
+        }
+ 
+
+    }
+
+    private void HandleMovement()
+    {
+        //getting the input vector from the GameInput script 
+        Vector2 inputVector2 = gameInput.GetMovementVector();
         // Move the player based on the input vector
         Vector3 moveDirection = new Vector3(inputVector2.x, 0f, inputVector2.y);
-        
+
 
         //check if any object is in the way by firing a raycast
         float moveDistance = moveSpeed * Time.deltaTime;
         float playerHeight = 2f;
         float playerRadius = .7f;
         //returns a bool 
-        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirection, moveDistance); 
-        
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirection, moveDistance);
+
         if (!canMove)
         {
             //Cannot move towards moveDirection 
@@ -34,7 +134,7 @@ public class Player : MonoBehaviour
             //Attempt only x movement 
             Vector3 moveDirectionX = new Vector3(moveDirection.x, 0, 0);
             canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionX, moveDistance);
-            
+
             if (canMove)
             {
                 //can only move on the x
@@ -48,7 +148,7 @@ public class Player : MonoBehaviour
                 Vector3 moveDirectionZ = new Vector3(0, 0, moveDirection.z);
                 canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionZ, moveDistance);
 
-                if(canMove)
+                if (canMove)
                 {
                     //can only move z 
                     moveDirection = moveDirectionZ;
@@ -69,23 +169,15 @@ public class Player : MonoBehaviour
         }
 
         //Math function called lurp/slerp, it helsps with the interpolating 
-        float rotateSpeed = 10f; 
+        float rotateSpeed = 10f;
         //interpolate between and b based on t
         transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
-         
+
         isWalking = moveDirection != Vector3.zero;
 
         //two methods that work. 
         // transform.eulerAngles
         //transform.LookAt
-    }
-
-    //public because it is going to be accessed from another script (player)
-    //here we are gonna resturn if the player is walking
-    // for functions we have pascal case
-    public bool IsWalking()
-    {
-        return isWalking; 
     }
 }
 
