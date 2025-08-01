@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
             if(raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) 
             {
               //if true then the object has that component: ClearCounter. 
-              clearCounter.Interact();
+              
             }
 
 
