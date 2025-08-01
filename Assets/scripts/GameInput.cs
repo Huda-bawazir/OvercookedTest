@@ -13,7 +13,7 @@ public class GameInput : MonoBehaviour
    
 
 
-    private void Awake()
+    private void Awake()     
     {
         //create an object of the type player
         playerInputActions = new PlayerInputActions();
@@ -27,10 +27,10 @@ public class GameInput : MonoBehaviour
     // when the player presses the interact action, it will cal this event. 
     private void Interact_performed(InputAction.CallbackContext obj)
     {
-        //ask if there are listners is one options (Using an f statment
+        //ask if there are listners is one options (Using an if statment)
         //using ? is a null onditional operator. It basically operates from the right, when it gets to a question mark,
         //it will evaluate the left side and if it is null it will not throw errors
-        //invoke is here because a question mark cannot call a function. 
+        //invoke is her e because a question mark cannot call a function. 
         OnInteractAction?.Invoke(this, EventArgs.Empty);
 
     }

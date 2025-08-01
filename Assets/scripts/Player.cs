@@ -1,9 +1,39 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System; 
+using System;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
+    //implementing singleton pattern using properties.
+    //this is a property. properties are exactly how getters and setters work. 
+    //you want other classes to be have access to the instance but not be able to set it. 
+    public static Player Instance { get; private set; }//getters and setters
+
+    private void Awake()
+    {
+        //if the instance has already been set to something then log an error. 
+        if (Instance != null)
+        {
+            Debug.LogError("There is more than one player");
+          
+        }
+        //there must be only one instance of the player.
+        Instance = this;
+    }
+
+
+    //Event to change the counter into the selected couter prefab. This event handler takes in a generic 
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedcounterChange; //he capetalizes the names of the eventhandlers
+
+    //Event Args. Is how you extend C# events to pass in some more data 
+    public class OnSelectedCounterChangedEventArgs : EventArgs
+    {
+        //they type of clear counter we are passing. 
+        public ClearCounter selectedCounter; 
+
+    }
+
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask countersLayerMask;
@@ -12,47 +42,26 @@ public class Player : MonoBehaviour
     //always camel case for fields
     private bool isWalking;
     //vector because...direction
-    private Vector3 lastInteractDirection; 
+    private Vector3 lastInteractDirection;
+    //field to keep track of the selected counter
+    private ClearCounter selectedCounter; 
    
     private void Start()
     {
+        //trigers the OninterAction Event handler in the GameInput class. 
         gameInput.OnInteractAction += GameInput_OnInteractAction;//Event handlers list
 
     }
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-        //Create a vector that takes in the player input
-        //create a raycast the detects a collider from the player's tranform position and get information back from the raycast. 
-        Vector2 inputVector2 = gameInput.GetMovementVector();
 
-        Vector3 moveDirection = new Vector3(inputVector2.x, 0f, inputVector2.y);
-
-        float interactionDistance = 2f;
-
-        //RayCast always returns a boolean so in order to get the object's refrence, we must use a different kind dof raycast
-        //A raycats with an out perameter called RaycastHit. They out keyword means it is an output Perameter it can return more than one value from a function
-        //when the move direction is zero, we will be firing a Raycats towards no direction at all causing it not to hit anything 
-        //because of that we need to keep track of the last moved direction. 
-        if (moveDirection != Vector3.zero)
+        //check if wwe have a selected counter 
+        if(selectedCounter != null)
         {
-            lastInteractDirection = moveDirection;
+            //if so we call the interact function
+            selectedCounter.Interact();
         }
-        //raycast towards any object with a collider 
-        //set a game object to a certain layer and use a layer mask, then the raycast will hit objects in that layer. 
-        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, interactionDistance, countersLayerMask))
-        {
-            //when we find out that we hit something, the next best thing to do is to identify that thing/transform. 
-            Debug.Log(raycastHit.transform);
-
-            //Try Get Componenet takes the type of component and it basically does the same thing as a rayCast (It returns a boolean) 
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-                //if true then the object has that component: ClearCounter. 
-                clearCounter.Interact();
-            }
-        }
-
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -94,22 +103,27 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, interactionDistance, countersLayerMask))
         {
             //when we find out that we hit something, the next best thing to do is to identify that thing/transform. 
-            Debug.Log(raycastHit.transform);
+            //Debug.Log(raycastHit.transform);
            
             //Try Get Componenet takes the type of component and it basically does the same thing as a rayCast (It returns a boolean) 
             if(raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) 
             {
               //if true then the object has that component: ClearCounter. 
-              
+              if (clearCounter != selectedCounter)
+                {
+                    //calling the event to modify the selected counter 
+                    SetSelectedCounter(clearCounter);  
+                }
+            } else {
+
+                //selectedCounter = null;
+                SetSelectedCounter(null);
             }
-
-
-        } else
-        {
-            Debug.Log("--"); 
+        } else {
+            //raycast isnt hitting an object.
+            //selectedCounter = null;
+            SetSelectedCounter(null);
         }
- 
-
     }
 
     private void HandleMovement()
@@ -178,6 +192,17 @@ public class Player : MonoBehaviour
         //two methods that work. 
         // transform.eulerAngles
         //transform.LookAt
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+
+        OnSelectedcounterChange?.Invoke(this, new OnSelectedCounterChangedEventArgs
+        {
+            selectedCounter = selectedCounter
+
+        });
     }
 }
 
