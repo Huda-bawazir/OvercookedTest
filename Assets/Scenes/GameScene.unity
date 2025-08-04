@@ -143,6 +143,10 @@ PrefabInstance:
       propertyPath: kitchenObjectSO
       value: 
       objectReference: {fileID: 11400000, guid: 6a3605b2882d16e4ebf0e0580dca0170, type: 2}
+    - target: {fileID: 2020119157190765357, guid: bda80f7b6506b1e498f6d79bd9dc5381, type: 3}
+      propertyPath: secondClearCounter
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3422760625878215038, guid: bda80f7b6506b1e498f6d79bd9dc5381, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.202
@@ -236,6 +240,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &263380901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2020119157190765357, guid: bda80f7b6506b1e498f6d79bd9dc5381, type: 3}
+  m_PrefabInstance: {fileID: 3447020}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1f5e1a272a92f4595fb29ca11bd9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,6 +1059,10 @@ PrefabInstance:
       propertyPath: selectedMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 42a8c1af22c7f8249a62d7a6d8646f71, type: 2}
+    - target: {fileID: 2020119157190765357, guid: bda80f7b6506b1e498f6d79bd9dc5381, type: 3}
+      propertyPath: secondClearCounter
+      value: 
+      objectReference: {fileID: 263380901}
     - target: {fileID: 3422760625878215038, guid: bda80f7b6506b1e498f6d79bd9dc5381, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.71

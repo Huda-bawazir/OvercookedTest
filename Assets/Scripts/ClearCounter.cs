@@ -6,17 +6,57 @@ public class ClearCounter : MonoBehaviour
     //refrence for tomato Prefab
     [SerializeField] private Transform counterTopPoint;
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
-   public void Interact()
+    [SerializeField] private ClearCounter secondClearCounter;
+    [SerializeField] private bool testing;
+
+    private KitchenObject kitchenObject;
+
+    private void Update()
     {
-        Debug.Log("Interact");
+       if(testing && Input.GetKeyDown(KeyCode.T))
+        {
+            if (kitchenObject != null)
+            {
+                kitchenObject.SetClearCounter(secondClearCounter);
+                string testing2 = "Object swapped"; 
+                Debug.Log(kitchenObject.GetClearCounter());
+            }
+        }
+    }
 
-        //spawining tomato 
-        Transform kitchenObjectTransform  = Instantiate(kitchenObjectSO.Prefab,counterTopPoint);
-        kitchenObjectTransform.localPosition = Vector3.zero;
+    public void Interact()
+    {
 
-        Debug.Log(kitchenObjectTransform.GetComponent<KitchenObject>().GetKitchenObjectSO().ObjectName);
+        //if kitchen object is null we are going to spawn it
+        if (kitchenObject == null)
+        {
+            //Debug.Log("Interact");
+
+            //spawining tomato 
+            Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab, counterTopPoint);
+            kitchenObjectTransform.localPosition = Vector3.zero;
+
+            //fixes the issue of spawning infinite objects. 
+            kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
+            //Tell the object where it lives(this ClearCounter)
+            kitchenObject.SetClearCounter(this); 
+
+             //chaning a paerent counter
 
 
+            //Debug.Log(kitchenObjectTransform.GetComponent<KitchenObject>().GetKitchenObjectSO().ObjectName);
 
+        }else
+        {
+            string testing = "object on counter"; 
+            Debug.Log(kitchenObject.GetClearCounter() + testing); 
+        }
+
+    }
+
+    //whenever we move to a second parent, we must ask the second parent to return the countertoppoint and move it there
+    public Transform GetKitchenObjectFollowTransform()
+    {
+        return counterTopPoint;
     }
 } 
