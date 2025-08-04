@@ -6,6 +6,7 @@ public class ClearCounter : MonoBehaviour, IKitchenObjectParent
     //refrence for tomato Prefab
     [SerializeField] private Transform counterTopPoint;
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
+    
   
 
     private KitchenObject kitchenObject;

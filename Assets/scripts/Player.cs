@@ -229,7 +229,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     public bool HasKitchenObject()
     {
-        return =kitchenObject != null;
+        return kitchenObject != null;
     }
 }
 
