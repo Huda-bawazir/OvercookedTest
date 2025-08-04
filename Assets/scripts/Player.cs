@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using System;
 using Unity.VisualScripting;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IKitchenObjectParent
 {
     //implementing singleton pattern using properties.
     //this is a property. properties are exactly how getters and setters work. 
@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask countersLayerMask;
+    [SerializeField] private Transform KitchenObjectHoldPoint; 
 
     //making a local field to store id the player is walking
     //always camel case for fields
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
     private Vector3 lastInteractDirection;
     //field to keep track of the selected counter
     private ClearCounter selectedCounter; 
+    private KitchenObject kitchenObject;
    
     private void Start()
     {
@@ -60,7 +62,7 @@ public class Player : MonoBehaviour
         if(selectedCounter != null)
         {
             //if so we call the interact function
-            selectedCounter.Interact();
+            selectedCounter.Interact(this);
         }
     }
 
@@ -203,6 +205,31 @@ public class Player : MonoBehaviour
             selectedCounter = selectedCounter
 
         });
+    }
+
+    public Transform GetKitchenObjectFollowTransform()
+    {
+        return KitchenObjectHoldPoint;
+    }
+
+    public void SetKitchenObject(KitchenObject kitchenObject)
+    {
+        this.kitchenObject = kitchenObject; 
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject; 
+    }
+
+    public void ClearkitchenObject()
+    {
+        kitchenObject = null;
+    }
+
+    public bool HasKitchenObject()
+    {
+        return kitchenObject != null;
     }
 }
 

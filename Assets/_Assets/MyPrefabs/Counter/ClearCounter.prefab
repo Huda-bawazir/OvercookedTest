@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3422760625878215038}
   - component: {fileID: 6132125589417966739}
-  - component: {fileID: 2020119157190765357}
+  - component: {fileID: 7970585563068605237}
   m_Layer: 6
   m_Name: ClearCounter
   m_TagString: Untagged
@@ -87,7 +87,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.4526441, y: 1.2565188, z: 1.377801}
   m_Center: {x: -0.01901865, y: 0.62556374, z: 0.042234898}
---- !u!114 &2020119157190765357
+--- !u!114 &7970585563068605237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,11 +96,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5792671162473623914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e1f5e1a272a92f4595fb29ca11bd9d8, type: 3}
+  m_Script: {fileID: 11500000, guid: c2d82a43e01642548be62e1d0bc93c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   counterTopPoint: {fileID: 1953111701689336332}
   kitchenObjectSO: {fileID: 11400000, guid: f04c0ec2e1de77540a360a1867de3693, type: 2}
+  secondClearCounter: {fileID: 0}
+  testing: 0
 --- !u!1001 &4828193883636846358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -210,9 +212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69762a3b8e979444fbf2c03ad0e1261f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCounter: {fileID: 2020119157190765357}
-  normalMaterial: {fileID: 0}
-  selectedMaterial: {fileID: 2100000, guid: 1a0afd856a35421469b28b916116fd9c, type: 2}
+  clearCounter: {fileID: 7970585563068605237}
+  normalMaterial: {fileID: 592705374249410987, guid: e3d496c6436b0cf4a8eef3d8865e8639, type: 3}
+  selectedMaterial: {fileID: 2100000, guid: 42a8c1af22c7f8249a62d7a6d8646f71, type: 2}
   meshRenderer: {fileID: 6083335402612052479}
 --- !u!4 &8984896513009134525 stripped
 Transform:

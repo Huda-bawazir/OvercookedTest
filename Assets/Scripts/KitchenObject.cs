@@ -7,34 +7,34 @@ public class KitchenObject : MonoBehaviour
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
 
     //to helpe make sure the kitchen object knows where it is. 
-    private ClearCounter clearCounter; 
+    private IKitchenObjectParent kitchenObjectParent; 
 
     public KitchenObjectSO GetKitchenObjectSO() { return kitchenObjectSO; }
 
-    public void SetClearCounter (ClearCounter clearCounter)
+    public void SetKitchenObjectParent (IKitchenObjectParent kitchenObjectParent)
     {
         //clear the current parent if its not null
-        if (this.clearCounter != null)
+        if (this.kitchenObjectParent != null)
         {
-            this.clearCounter.ClearkitchenObject(); 
+            this.kitchenObjectParent.ClearkitchenObject(); 
         }
 
         //set the kitchen object for the parent. 
-        this.clearCounter = clearCounter;
+        this.kitchenObjectParent = kitchenObjectParent;
 
-        if (clearCounter.HasKitchenObject() ) {
+        if (kitchenObjectParent.HasKitchenObject() ) {
 
             Debug.LogError("Counter already has a kitchenObject"); 
         }
-        clearCounter.SetKitchenObject(this); 
+        kitchenObjectParent.SetKitchenObject(this); 
 
         //When setting the lcear counter to a differnt one, the object should automatically transport. 
-        transform.parent = clearCounter.GetKitchenObjectFollowTransform();
+        transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
         transform.localPosition = Vector3.zero;
     }
-    public ClearCounter GetClearCounter ()
+    public IKitchenObjectParent GetKitcheObjectParent ()
     {
-        return clearCounter;
+        return kitchenObjectParent;
     }
 
 

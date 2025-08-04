@@ -1,42 +1,27 @@
 using UnityEngine;
 
-public class ClearCounter : MonoBehaviour
+public class ClearCounter : MonoBehaviour, IKitchenObjectParent
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //refrence for tomato Prefab
     [SerializeField] private Transform counterTopPoint;
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
-    [SerializeField] private ClearCounter secondClearCounter;
-    [SerializeField] private bool testing;
+  
 
     private KitchenObject kitchenObject;
 
-    private void Update()
+    public void Interact(Player player)
     {
-       if(testing && Input.GetKeyDown(KeyCode.T))
-        {
-            if (kitchenObject != null)
-            {
-                kitchenObject.SetClearCounter(secondClearCounter);
-            }
-        }
-    }
-
-    public void Interact()
-    {
-
         //if kitchen object is null we are going to spawn it
         if (kitchenObject == null)
-        {
-            //Debug.Log("Interact");
-
+        { 
             //spawining tomato 
             Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab, counterTopPoint);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetClearCounter(this);
+            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
         }else
         {
-            string testing = "object on counter"; 
-            Debug.Log(kitchenObject.GetClearCounter() + testing); 
+            //Give the object to the player. 
+            kitchenObject.SetKitchenObjectParent(player);
         }
 
     }
