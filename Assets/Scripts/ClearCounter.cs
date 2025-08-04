@@ -18,8 +18,6 @@ public class ClearCounter : MonoBehaviour
             if (kitchenObject != null)
             {
                 kitchenObject.SetClearCounter(secondClearCounter);
-                string testing2 = "Object swapped"; 
-                Debug.Log(kitchenObject.GetClearCounter());
             }
         }
     }
@@ -34,18 +32,7 @@ public class ClearCounter : MonoBehaviour
 
             //spawining tomato 
             Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab, counterTopPoint);
-            kitchenObjectTransform.localPosition = Vector3.zero;
-
-            //fixes the issue of spawning infinite objects. 
-            kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
-            //Tell the object where it lives(this ClearCounter)
-            kitchenObject.SetClearCounter(this); 
-
-             //chaning a paerent counter
-
-
-            //Debug.Log(kitchenObjectTransform.GetComponent<KitchenObject>().GetKitchenObjectSO().ObjectName);
-
+            kitchenObjectTransform.GetComponent<KitchenObject>().SetClearCounter(this);
         }else
         {
             string testing = "object on counter"; 
@@ -59,4 +46,25 @@ public class ClearCounter : MonoBehaviour
     {
         return counterTopPoint;
     }
+
+    public void SetKitchenObject (KitchenObject kitchenObject)
+    {
+        this.kitchenObject = kitchenObject;
+    }
+
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject;   
+    }
+
+    public void ClearkitchenObject()
+    {
+        kitchenObject = null; 
+
+    }
+    public bool HasKitchenObject()
+    {
+        return kitchenObject != null;
+    }
 } 
+

@@ -13,7 +13,21 @@ public class KitchenObject : MonoBehaviour
 
     public void SetClearCounter (ClearCounter clearCounter)
     {
+        //clear the current parent if its not null
+        if (this.clearCounter != null)
+        {
+            this.clearCounter.ClearkitchenObject(); 
+        }
+
+        //set the kitchen object for the parent. 
         this.clearCounter = clearCounter;
+
+        if (clearCounter.HasKitchenObject() ) {
+
+            Debug.LogError("Counter already has a kitchenObject"); 
+        }
+        clearCounter.SetKitchenObject(this); 
+
         //When setting the lcear counter to a differnt one, the object should automatically transport. 
         transform.parent = clearCounter.GetKitchenObjectFollowTransform();
         transform.localPosition = Vector3.zero;
