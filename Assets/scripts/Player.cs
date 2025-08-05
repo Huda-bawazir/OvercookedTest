@@ -30,7 +30,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
         //they type of clear counter we are passing. 
-        public ClearCounter selectedCounter; 
+        public BaseCounter selectedCounter; 
 
     }
 
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     //vector because...direction
     private Vector3 lastInteractDirection;
     //field to keep track of the selected counter
-    private ClearCounter selectedCounter; 
+    private BaseCounter selectedCounter; 
     private KitchenObject kitchenObject;
    
     private void Start()
@@ -108,13 +108,13 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             //Debug.Log(raycastHit.transform);
            
             //Try Get Componenet takes the type of component and it basically does the same thing as a rayCast (It returns a boolean) 
-            if(raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) 
+            if(raycastHit.transform.TryGetComponent(out BaseCounter baseCounter)) 
             {
               //if true then the object has that component: ClearCounter. 
-              if (clearCounter != selectedCounter)
+              if (baseCounter != selectedCounter)
                 {
                     //calling the event to modify the selected counter 
-                    SetSelectedCounter(clearCounter);  
+                    SetSelectedCounter(baseCounter);  
                 }
             } else {
 
@@ -196,7 +196,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         //transform.LookAt
     }
 
-    private void SetSelectedCounter(ClearCounter selectedCounter)
+    private void SetSelectedCounter(BaseCounter selectedCounter)
     {
         this.selectedCounter = selectedCounter;
 

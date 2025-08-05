@@ -1,12 +1,11 @@
+using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
 
 public class SelectedCounterVisual : MonoBehaviour
 {
-    [SerializeField] private ClearCounter clearCounter;
-    [SerializeField] private Material normalMaterial;
-    [SerializeField] private Material selectedMaterial;
-    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private BaseCounter baseCounter;
+    [SerializeField] private List<GameObject> selectedGameObjects;
 
     //instead of using a seralized field the way we did for gameinput in the Player's script.
     //we can use singlton pattern. 
@@ -14,12 +13,14 @@ public class SelectedCounterVisual : MonoBehaviour
     {
         //in start so that it runs after the script where the instance runs. 
         Player.Instance.OnSelectedcounterChange += Player_OnSelectedCounterChange;
+        for (int i = 0;i< transform.childCount;i++)
+            selectedGameObjects.Add(transform.GetChild(i).gameObject);
     }
 
-    private void Player_OnSelectedCounterChange(object sender, Player.OnSelectedCounterChangedEventArgs e)
+    private void Player_OnSelectedCounterChange(object sender, Player.OnSelectedCounterChangedEventArgs e) 
     {
         //compare which counter this visual belongs to. 
-        if (e.selectedCounter == clearCounter)
+        if (e.selectedCounter == baseCounter)
         {
             //if the selected counter is this counter then show the visual 
             Show(); 
@@ -33,12 +34,14 @@ public class SelectedCounterVisual : MonoBehaviour
 
     private void Show()
     {
-        meshRenderer.material = selectedMaterial;
+        foreach (var selectedGameObject in selectedGameObjects)
+            selectedGameObject.SetActive(true);
     }
 
     private void Hide()
     {
-        meshRenderer.material = normalMaterial;
+        foreach (var selectedGameObject in selectedGameObjects)
+            selectedGameObject.SetActive(false);
     }
 }
 

@@ -111,10 +111,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69762a3b8e979444fbf2c03ad0e1261f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearCounter: {fileID: 4836556693817187828}
+  baseCounter: {fileID: 4836556693817187828}
   normalMaterial: {fileID: 592705374249410987, guid: e3d496c6436b0cf4a8eef3d8865e8639, type: 3}
   selectedMaterial: {fileID: 2100000, guid: 42a8c1af22c7f8249a62d7a6d8646f71, type: 2}
-  meshRenderer: {fileID: 7843147818332489460}
+  meshRenderers:
+  - {fileID: 7843147818332489460}
 --- !u!1001 &6599053479686737935
 PrefabInstance:
   m_ObjectHideFlags: 0
