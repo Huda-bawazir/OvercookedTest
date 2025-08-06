@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class KitchenObject : MonoBehaviour
 {
@@ -41,5 +42,19 @@ public class KitchenObject : MonoBehaviour
     {
         kitchenObjectParent.ClearkitchenObject();
         Destroy(gameObject);
+    }
+
+    public static KitchenObject SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent kitchenObjectParent)
+    {
+        //this will autmoatically span the object and  set the parent. 
+        Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab);
+
+        KitchenObject kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
+
+        kitchenObject.SetKitchenObjectParent(kitchenObjectParent); 
+
+        return kitchenObject;
+
+
     }
 }

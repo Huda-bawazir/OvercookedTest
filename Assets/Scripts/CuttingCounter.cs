@@ -44,9 +44,7 @@ public class CuttingCounter : BaseCounter
             //cut kitchen object. In order to cut kitchen object in the simplest way is to destroy it
             GetKitchenObject().OnDestroySelf();
             //spawn the sliced object.
-            Transform kitchenObjectTransform = Instantiate(cutKitchenObjectSO.Prefab);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this); 
-
+            KitchenObject.SpawnKitchenObject(cutKitchenObjectSO, this);
         }
     }
 }

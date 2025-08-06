@@ -15,8 +15,7 @@ public class ContainerCounter : BaseCounter
         if (!player.HasKitchenObject())
         {   //player does not have an object.  
             //spawining a prefab that has a scriptable object.
-            Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
+            KitchenObject.SpawnKitchenObject(kitchenObjectSO, player);
 
             //when the player grabs the object we invoke the event
             OnPlayerGrabbedObject?.Invoke(this, EventArgs.Empty);
