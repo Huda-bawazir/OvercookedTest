@@ -60,7 +60,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
         if(selectedCounter != null)
         {
-            //if so we call the interact function
             selectedCounter.InteractAlternate(this);
         }
     }
