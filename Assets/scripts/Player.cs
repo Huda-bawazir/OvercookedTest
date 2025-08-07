@@ -216,7 +216,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private void SetSelectedCounter(BaseCounter selectedCounter)
     {
         this.selectedCounter = selectedCounter;
-
+        if (selectedCounter != null)
+            Debug.Log("Selected : " + selectedCounter);
         OnSelectedcounterChange?.Invoke(this, new OnSelectedCounterChangedEventArgs
         {
             selectedCounter = selectedCounter
