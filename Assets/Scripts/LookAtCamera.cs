@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LookAtCounter : MonoBehaviour
+public class LookAtCamera : MonoBehaviour
 {
     //enums are a fixed set of options you can have of something
     private enum Mode
