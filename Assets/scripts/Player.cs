@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 using Unity.VisualScripting;
+using UnityEditor;
 
 public class Player : MonoBehaviour, IKitchenObjectParent
 {
@@ -10,13 +11,31 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     //you want other classes to be have access to the instance but not be able to set it. 
     public static Player Instance { get; private set; }//getters and setters
 
+    [SerializeField] private float moveSpeed = 7f;
+    [SerializeField] private GameInput gameInput;
+    [SerializeField] private LayerMask countersLayerMask;
+    [SerializeField] private Transform KitchenObjectHoldPoint;
+
+    //making a local field to store id the player is walking
+    //always camel case for fields
+    private bool isWalking;
+    //vector because...direction
+    private Vector3 lastInteractDirection;
+    //field to keep track of the selected counter
+    private BaseCounter selectedCounter;
+    private KitchenObject kitchenObject;
+
+    [Header("Capsule Settings:")]
+    [SerializeField] public float radius = .5f;
+    [SerializeField] public float height = .7f;
+
     private void Awake()
     {
         //if the instance has already been set to something then log an error. 
         if (Instance != null)
         {
             Debug.LogError("There is more than one player");
-          
+
         }
         //there must be only one instance of the player.
         Instance = this;
@@ -30,24 +49,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
         //they type of clear counter we are passing. 
-        public BaseCounter selectedCounter; 
+        public BaseCounter selectedCounter;
 
     }
 
-    [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private GameInput gameInput;
-    [SerializeField] private LayerMask countersLayerMask;
-    [SerializeField] private Transform KitchenObjectHoldPoint; 
-
-    //making a local field to store id the player is walking
-    //always camel case for fields
-    private bool isWalking;
-    //vector because...direction
-    private Vector3 lastInteractDirection;
-    //field to keep track of the selected counter
-    private BaseCounter selectedCounter; 
-    private KitchenObject kitchenObject;
-   
     private void Start()
     {
         //trigers the OninterAction Event handler in the GameInput class. 
@@ -58,7 +63,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
     {
-        if(selectedCounter != null)
+        if (selectedCounter != null)
         {
             selectedCounter.InteractAlternate(this);
         }
@@ -68,7 +73,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
 
         //check if wwe have a selected counter 
-        if(selectedCounter != null)
+        if (selectedCounter != null)
         {
             //if so we call the interact function
             selectedCounter.Interact(this);
@@ -78,9 +83,9 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Update()
     {
-        HandleMovement(); 
+        HandleMovement();
         HandleInteractions();
-       
+
     }
 
     //public because it is going to be accessed from another script (player)
@@ -88,7 +93,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     // for functions we have pascal case
     public bool IsWalking()
     {
-        return isWalking; 
+        return isWalking;
     }
 
     private void HandleInteractions()
@@ -96,41 +101,45 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         //Create a vector that takes in the player input
         //create a raycast the detects a collider from the player's tranform position and get information back from the raycast. 
         Vector2 inputVector2 = gameInput.GetMovementVector();
-        
+
         Vector3 moveDirection = new Vector3(inputVector2.x, 0f, inputVector2.y);
 
-        float interactionDistance = 2f; 
+        float interactionDistance = 2f;
 
         //RayCast always returns a boolean so in order to get the object's refrence, we must use a different kind dof raycast
         //A raycats with an out perameter called RaycastHit. They out keyword means it is an output Perameter it can return more than one value from a function
         //when the move direction is zero, we will be firing a Raycats towards no direction at all causing it not to hit anything 
         //because of that we need to keep track of the last moved direction. 
-        if(moveDirection !=  Vector3.zero)
+        if (moveDirection != Vector3.zero)
         {
-            lastInteractDirection = moveDirection; 
+            lastInteractDirection = moveDirection;
         }
-           //raycast towards any object with a collider 
-           //set a game object to a certain layer and use a layer mask, then the raycast will hit objects in that layer. 
+        //raycast towards any object with a collider 
+        //set a game object to a certain layer and use a layer mask, then the raycast will hit objects in that layer. 
         if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, interactionDistance, countersLayerMask))
         {
             //when we find out that we hit something, the next best thing to do is to identify that thing/transform. 
             //Debug.Log(raycastHit.transform);
-           
+
             //Try Get Componenet takes the type of component and it basically does the same thing as a rayCast (It returns a boolean) 
-            if(raycastHit.transform.TryGetComponent(out BaseCounter baseCounter)) 
+            if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-              //if true then the object has that component: ClearCounter. 
-              if (baseCounter != selectedCounter)
+                //if true then the object has that component: ClearCounter. 
+                if (baseCounter != selectedCounter)
                 {
                     //calling the event to modify the selected counter 
-                    SetSelectedCounter(baseCounter);  
+                    SetSelectedCounter(baseCounter);
                 }
-            } else {
+            }
+            else
+            {
 
                 //selectedCounter = null;
                 SetSelectedCounter(null);
             }
-        } else {
+        }
+        else
+        {
             //raycast isnt hitting an object.
             //selectedCounter = null;
             SetSelectedCounter(null);
@@ -139,27 +148,26 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void HandleMovement()
     {
+
         //getting the input vector from the GameInput script 
         Vector2 inputVector2 = gameInput.GetMovementVector();
         // Move the player based on the input vector
-        Vector3 moveDirection = new Vector3(inputVector2.x, 0f, inputVector2.y);
+        Vector3 moveDirection = new Vector3(inputVector2.x, 0f, inputVector2.y).normalized;
 
 
         //check if any object is in the way by firing a raycast
         float moveDistance = moveSpeed * Time.deltaTime;
-        float playerHeight = 2f;
-        float playerRadius = .7f;
+
         //returns a bool 
-        bool canMove =  !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirection, moveDistance);
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDirection, moveDistance);
 
         if (!canMove)
         {
             //Cannot move towards moveDirection 
 
             //Attempt only x movement 
-            Vector3 moveDirectionX = new Vector3(moveDirection.x, 0, 0);
-            canMove = moveDirection.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionX, moveDistance);
-
+            Vector3 moveDirectionX = new Vector3(moveDirection.x, 0, 0).normalized;
+            canMove = moveDirectionX.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDirectionX, moveDistance);
             if (canMove)
             {
                 //can only move on the x
@@ -170,8 +178,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                 //cannot move only on X 
 
                 //Atempt only Z movement 
-                Vector3 moveDirectionZ = new Vector3(0, 0, moveDirection.z);
-                canMove = moveDirection.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionZ, moveDistance);
+                Vector3 moveDirectionZ = new Vector3(0, 0, moveDirection.z).normalized;
+                canMove = moveDirectionZ.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDirectionZ, moveDistance);
 
                 if (canMove)
                 {
@@ -223,12 +231,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
-        this.kitchenObject = kitchenObject; 
+        this.kitchenObject = kitchenObject;
     }
 
     public KitchenObject GetKitchenObject()
     {
-        return kitchenObject; 
+        return kitchenObject;
     }
 
     public void ClearkitchenObject()
@@ -240,5 +248,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
         return kitchenObject != null;
     }
+
 }
+
+
 

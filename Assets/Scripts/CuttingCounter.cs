@@ -1,9 +1,21 @@
+using System;
 using UnityEngine;
 
 public class CuttingCounter : BaseCounter
 {
+    //nned somekind o event to update bar imagie 
+    public event EventHandler <OnProgressChangedEventsArgs> OnProgressChanged;  
+    public class OnProgressChangedEventsArgs : EventArgs
+    {
+        public float progressNormalized; 
+    }
+
+    public event EventHandler OnCut; 
+
     //for the cut kitchen object
     [SerializeField] CuttingRecipeSO[] cuttingRecipeSOArray;
+    //kepping track of the cutting progress
+    [SerializeField] private int cuttingProgress; 
     public override void Interact(Player player)
     {
         //will only serve to pick up and place items
@@ -13,8 +25,18 @@ public class CuttingCounter : BaseCounter
             //if there is no ibject then check the player himself, if he has object. 
             if (player.HasKitchenObject())
             {
+                if (HasRecepieWithInput(player.GetKitchenObject().GetKitchenObjectSO()))
+                {
+                    //player is carying something that can be cut
+                    player.GetKitchenObject().SetKitchenObjectParent(this);
+                    cuttingProgress = 0;
+                    CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+                    OnProgressChanged?.Invoke(this, new OnProgressChangedEventsArgs()
+                    {
+                        progressNormalized = (float) cuttingProgress/cuttingRecipeSO.progressCuttingMax
+                    });
+                }
                 //player is carrying something, drop the object from the player to the counter 
-                player.GetKitchenObject().SetKitchenObjectParent(this);
             }
             else
             {
@@ -38,32 +60,65 @@ public class CuttingCounter : BaseCounter
     }
     public override void InteractAlternate(Player player)
     {
-        //if there is a kitcjen object.
-        if (HasKitchenObject())
+        //if there is a kitchen object and it can be cut. 
+        if (HasKitchenObject() && HasRecepieWithInput(GetKitchenObject().GetKitchenObjectSO()))
         {
-            KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO()); 
-            //cut kitchen object. In order to cut kitchen object in the simplest way is to destroy it
-            GetKitchenObject().OnDestroySelf();
-            //Find out which recipe is applied,by cycling through the array to find the object in GetKitchenObject,and then spawn the recipe. 
-            KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
-        }else
-        {
-            Debug.Log("HasKitchenObject: " + HasKitchenObject());
-            Debug.Log("KitchenObject: " + GetKitchenObject());
-            Debug.Log("KitchenObjectSO: " + GetKitchenObject().GetKitchenObjectSO());
+            //increase cutting ptogress 
+            cuttingProgress++;
 
+            OnCut?.Invoke(this, EventArgs.Empty);
+
+            CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+            OnProgressChanged?.Invoke(this, new OnProgressChangedEventsArgs()
+            {
+                progressNormalized = (float)cuttingProgress / cuttingRecipeSO.progressCuttingMax
+            });
+            if (cuttingProgress >= cuttingRecipeSO.progressCuttingMax)
+            {
+                //spawn the clices oncfe the object reaches the max progress.
+                KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
+                //cut kitchen object. In order to cut kitchen object in the simplest way is to destroy it
+                GetKitchenObject().OnDestroySelf();
+                //Find out which recipe is applied,by cycling through the array to find the object in GetKitchenObject,and then spawn the recipe. 
+                KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
+            }
         }
     }
 
-    //functoion to cycle through the Cutting recipes 
-    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObejctSO) {
-        foreach(CuttingRecipeSO cuttingRecipeSO in cuttingRecipeSOArray)
+    //function to check if the object the player is carrying is a scriptable object recipe ( a part of recipe CuttingRecipeSO
+    private bool HasRecepieWithInput( KitchenObjectSO inputKitchenObejctSO)
+    {
+        CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObejctSO);
+        return cuttingRecipeSO;  
+    }
+
+    //functoion tp retun the output of the recipe 
+    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObejctSO)
+    {
+        CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(inputKitchenObejctSO);
+         if( cuttingRecipeSO != null)
+         {
+             return cuttingRecipeSO.output;
+         } else
+         {
+                return null;
+         }
+    }
+     
+    //Function to cycle through the array and retun the kitchenobject that matches the one in the recipe. 
+    private CuttingRecipeSO GetCuttingRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO)
+    {
+        foreach (CuttingRecipeSO cuttingRecipeSO in cuttingRecipeSOArray)
         {
-            if(cuttingRecipeSO.input == inputKitchenObejctSO)
+            if (cuttingRecipeSO.input == inputKitchenObjectSO)
             {
-                return cuttingRecipeSO.output; 
+                //if the kitchenObjectSO is a part of the cuttingrecipeSO
+                return cuttingRecipeSO;
             }
-        } return null;
+
+            //its not a cutting recipe SO
+        }
+        return null;
     }
 }
 
