@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plateKitchenObject: {fileID: -4125802828966905388}
+  iconTemplate: {fileID: 0}
 --- !u!1 &1897967813263346936
 GameObject:
   m_ObjectHideFlags: 0
