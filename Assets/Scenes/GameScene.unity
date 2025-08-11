@@ -1263,7 +1263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5016967081639510922, guid: f904014dba441c94b9a0ccc25939e4c6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.81
+      value: -4.25
       objectReference: {fileID: 0}
     - target: {fileID: 5016967081639510922, guid: f904014dba441c94b9a0ccc25939e4c6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3086,7 +3086,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3157078298483692690, guid: df126a3fbfb2fa74f9b276a6508cc112, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.306484
+      value: -5.74
       objectReference: {fileID: 0}
     - target: {fileID: 3157078298483692690, guid: df126a3fbfb2fa74f9b276a6508cc112, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3123,6 +3123,14 @@ PrefabInstance:
     - target: {fileID: 3157078298483692690, guid: df126a3fbfb2fa74f9b276a6508cc112, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4820969030042541880, guid: df126a3fbfb2fa74f9b276a6508cc112, type: 3}
+      propertyPath: spawnPlaterTimerMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5451559949219245414, guid: df126a3fbfb2fa74f9b276a6508cc112, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 6067356816793046150, guid: df126a3fbfb2fa74f9b276a6508cc112, type: 3}
       propertyPath: m_Name

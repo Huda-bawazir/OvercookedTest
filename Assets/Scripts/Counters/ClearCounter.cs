@@ -25,8 +25,31 @@ public class ClearCounter : BaseCounter, IKitchenObjectParent
             //there is a kitchen object there
             if ( player.HasKitchenObject())
             {
-                //The player is cating something 
-            }else
+                //The player is carying a somthing
+               //check if the plater is carying a plate. 
+               if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {  //player is holding a plate
+                    //add it to the list in PlateKitchenObject.
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                    {
+                        //destroy it from the kitchen counter to add it to the plate 
+                        GetKitchenObject().DestroySelf();
+                    }
+                } else
+                {
+                    //Player is not holding a plate but something else. 
+                    if(GetKitchenObject().TryGetPlate(out plateKitchenObject))
+                    {
+                        //If the counter is hodling a plate \
+                        if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectSO()))
+                        {
+                            player.GetKitchenObject().DestroySelf();
+                        }
+                    }
+
+                }
+            }
+            else
             {
                 //player is not arying something 
                 GetKitchenObject().SetKitchenObjectParent(player); 

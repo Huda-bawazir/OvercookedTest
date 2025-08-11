@@ -46,6 +46,15 @@ public class CuttingCounter : BaseCounter, IHasProgress
             if (player.HasKitchenObject())
             {
                 //The player is carying something 
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {  //player is holding a plate
+                    //add it to the list in PlateKitchenObject.
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                    {
+                        //destroy it from the kitchen counter to add it to the plate 
+                        GetKitchenObject().DestroySelf();
+                    }
+                }
             }
             else
             {
@@ -75,7 +84,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 //spawn the clices oncfe the object reaches the max progress.
                 KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
                 //cut kitchen object. In order to cut kitchen object in the simplest way is to destroy it
-                GetKitchenObject().OnDestroySelf();
+                GetKitchenObject().DestroySelf();
                 //Find out which recipe is applied,by cycling through the array to find the object in GetKitchenObject,and then spawn the recipe. 
                 KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
             }

@@ -38,10 +38,27 @@ public class KitchenObject : MonoBehaviour
         return kitchenObjectParent;
     }
 
-    public void OnDestroySelf()
+    public void DestroySelf()
     {
         kitchenObjectParent.ClearkitchenObject();
         Destroy(gameObject);
+    }
+
+    //verifying if an object is a plate. This function returns a bool and the playeKitchenObject.
+    public bool TryGetPlate(out PlateKitchenObject plateKitchenObject)
+    {
+        //if this is a object is a plate kitchen Object. 
+         if (this is PlateKitchenObject)
+        {
+            //if it is, assign the value as in cast it as a plate kitchen object.
+            plateKitchenObject = this as PlateKitchenObject;
+            return true;
+        } else
+        {
+            plateKitchenObject=null;
+            //if it's not a plate return false
+            return false;
+        }
     }
 
     public static KitchenObject SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent kitchenObjectParent)
