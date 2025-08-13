@@ -7,7 +7,11 @@ using UnityEngine;
 public class DeliveryManager : MonoBehaviour
 {
     public event EventHandler OnRecipeSpwan;  
-    public event EventHandler OnReceipeCompleted; 
+    public event EventHandler OnReceipeCompleted;
+    public event EventHandler OnRecipeSuccess;
+    public event EventHandler OnRecipeFaild;
+
+
 
     //A signleton of Delivery Manager
     public static DeliveryManager Instance { get; private set; }
@@ -89,7 +93,7 @@ public class DeliveryManager : MonoBehaviour
                     waitingRecipeSOList.RemoveAt(i);
 
                     OnReceipeCompleted?.Invoke(this, EventArgs.Empty);
-
+                    OnRecipeSuccess?.Invoke(this, EventArgs.Empty);
                     //to stop the recipe execution 
                     return;
                 }
