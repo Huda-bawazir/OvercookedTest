@@ -1,10 +1,14 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeliveryManager : MonoBehaviour
 {
+    public event EventHandler OnRecipeSpwan;  
+    public event EventHandler OnReceipeCompleted; 
+
     //A signleton of Delivery Manager
     public static DeliveryManager Instance { get; private set; }
 
@@ -15,7 +19,7 @@ public class DeliveryManager : MonoBehaviour
 
     //timer to spawn the recipes that are wating to be made 
     private float spawnRecipeTimer;
-    private float spwanRecipeTimerMax = 4f;
+    private float spwanRecipeTimerMax = 6f;
     private int waitingRecipeMax = 4; 
 
     private void Awake()
@@ -35,9 +39,10 @@ public class DeliveryManager : MonoBehaviour
             if (waitingRecipeSOList.Count < waitingRecipeMax)
             {
                 spawnRecipeTimer = spwanRecipeTimerMax;
-                RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[Random.Range(0, recipeListSO.recipeSOList.Count)];
-                Debug.Log(waitingRecipeSO.name);
+                RecipeSO waitingRecipeSO = recipeListSO.recipeSOList[UnityEngine.Random.Range(0, recipeListSO.recipeSOList.Count)];
                 waitingRecipeSOList.Add(waitingRecipeSO);
+
+                OnRecipeSpwan?.Invoke(this, EventArgs.Empty);   
             }
         }
     }
@@ -79,9 +84,12 @@ public class DeliveryManager : MonoBehaviour
                 if (plateContentMatchesRecipe)
                 {
                     //player delivered the correct recipe!
-                    Debug.Log("Player delivered the correct recipe!"); 
+
                     //remove the recipe from the list once it is submitted
                     waitingRecipeSOList.RemoveAt(i);
+
+                    OnReceipeCompleted?.Invoke(this, EventArgs.Empty);
+
                     //to stop the recipe execution 
                     return;
                 }
@@ -90,6 +98,9 @@ public class DeliveryManager : MonoBehaviour
 
         //No matches found!
         //the player did not deliver a correct recipe
-        Debug.Log("Player did not deliver a correct recipe"); 
+    }
+    public List<RecipeSO> GetWaitingRecipeSOList()
+    {
+        return waitingRecipeSOList; 
     }
 }
