@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ae1206a97fdf184199f0a136f307fab, type: 3}
   m_Name: Salad
   m_EditorClassIdentifier: 
-  kitchenObjectList:
-  - {fileID: 11400000, guid: b8aecadbc8294d2409f0e9f36c01e227, type: 2}
+  kitchenObjectSOList:
   - {fileID: 11400000, guid: 67e5c5f05b5b9c748ab66e0115b58719, type: 2}
+  - {fileID: 11400000, guid: b8aecadbc8294d2409f0e9f36c01e227, type: 2}
   recipeName: Salad

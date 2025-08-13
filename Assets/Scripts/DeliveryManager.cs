@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class DeliveryManager : MonoBehaviour
 {
+    //A signleton of Delivery Manager
+    public static DeliveryManager Instance { get; private set; }
+
+
     [SerializeField] private RecipeListSO recipeListSO;
     //Something to store the customer's orders in
     private List<RecipeSO> waitingRecipeSOList;
@@ -16,7 +20,7 @@ public class DeliveryManager : MonoBehaviour
 
     private void Awake()
     {
-        spawnRecipeTimer = spwanRecipeTimerMax; 
+        Instance = this;
         waitingRecipeSOList = new List<RecipeSO>();
     }
     private void Update()
@@ -26,6 +30,8 @@ public class DeliveryManager : MonoBehaviour
 
         if(spawnRecipeTimer < 0f)
         {
+           spawnRecipeTimer = spwanRecipeTimerMax;
+
             if (waitingRecipeSOList.Count < waitingRecipeMax)
             {
                 spawnRecipeTimer = spwanRecipeTimerMax;
@@ -34,5 +40,56 @@ public class DeliveryManager : MonoBehaviour
                 waitingRecipeSOList.Add(waitingRecipeSO);
             }
         }
+    }
+
+    public void DeliverRecipe(PlateKitchenObject plateKitchenObject)
+    {
+        //Do the ingredients of the plate match the item in the waiting manue recipe
+        for(int i = 0; i < waitingRecipeSOList.Count; ++i)
+        {
+            RecipeSO waitngRecipeSO  = waitingRecipeSOList[i]; 
+
+            if(waitngRecipeSO.kitchenObjectSOList.Count == plateKitchenObject.GetKitchenObjectSOList().Count)//example : if the waiting list is the same legnth as the kitchen Object list in the burger for example
+            {
+                //has the same number of ingredients
+                bool plateContentMatchesRecipe = true;
+
+                //the second condition is that the ingredients of the plate and the recipe in the waiting list match
+                foreach (KitchenObjectSO recipeKitchenObjectSO in waitngRecipeSO.kitchenObjectSOList)
+                {
+                    //cycle throught the ingredients of the recipe to see if they match
+                    bool ingredientFound = false; 
+                    foreach (KitchenObjectSO plateKitchenObjectSO in plateKitchenObject.GetKitchenObjectSOList())
+                    {
+                        //cycling throgh all the ingredients in the plate. 
+                        //now we need to check if the ingredient on the plate matches the ingredients of the recipe 
+                        if (plateKitchenObjectSO == recipeKitchenObjectSO)
+                        {
+                            //Ingredient matches!
+                            ingredientFound = true;
+                            break;
+                        }
+                    }
+                   if (!ingredientFound)
+                    {
+                        //this recipe ingredient was not found on the plate. 
+                        plateContentMatchesRecipe = false;
+                    }
+                }
+                if (plateContentMatchesRecipe)
+                {
+                    //player delivered the correct recipe!
+                    Debug.Log("Player delivered the correct recipe!"); 
+                    //remove the recipe from the list once it is submitted
+                    waitingRecipeSOList.RemoveAt(i);
+                    //to stop the recipe execution 
+                    return;
+                }
+            }
+        }
+
+        //No matches found!
+        //the player did not deliver a correct recipe
+        Debug.Log("Player did not deliver a correct recipe"); 
     }
 }

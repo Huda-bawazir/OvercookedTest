@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ae1206a97fdf184199f0a136f307fab, type: 3}
   m_Name: CheeseBurger
   m_EditorClassIdentifier: 
-  kitchenObjectList:
+  kitchenObjectSOList:
   - {fileID: 11400000, guid: 7e5d96e61d64f4244a5de71a0f055d47, type: 2}
-  - {fileID: 11400000, guid: bbf9797d46efee1488d5d208ca6f0898, type: 2}
   - {fileID: 11400000, guid: 60ef2774fca3f4b45befe9ff3a64e129, type: 2}
+  - {fileID: 11400000, guid: bbf9797d46efee1488d5d208ca6f0898, type: 2}
   recipeName: Cheese Bruger
