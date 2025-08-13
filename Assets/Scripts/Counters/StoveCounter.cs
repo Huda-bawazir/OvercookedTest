@@ -41,7 +41,6 @@ public class StoveCounter : BaseCounter, IHasProgress
     {
         if (HasKitchenObject())
         {
-            Debug.Log(fryingTimer);
             switch (state)
             {
                 case State.Idle:
