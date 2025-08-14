@@ -2528,6 +2528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 809450020}
   - component: {fileID: 809450019}
+  - component: {fileID: 809450021}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2572,6 +2573,18 @@ Transform:
   - {fileID: 235677170}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &809450021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809450018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147a4a55de0c6674d8ecff09df3cb0d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &825658662
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4878,7 +4891,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 7a05dfef8ff133848b3b25408c74021c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -6368,6 +6381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2063553835}
+  - component: {fileID: 2063553836}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -6390,6 +6404,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2063553836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063553834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308fc663f521cfa449a3c7efbd903b91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClipRefsSO: {fileID: 11400000, guid: a22792df8bd193343affee04c3d64494, type: 2}
 --- !u!1001 &2065223603
 PrefabInstance:
   m_ObjectHideFlags: 0

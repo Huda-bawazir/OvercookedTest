@@ -6,6 +6,8 @@ using UnityEditor;
 
 public class Player : MonoBehaviour, IKitchenObjectParent
 {
+    //events for sounds 
+    public event EventHandler OnPickedSomething; 
     //implementing singleton pattern using properties.
     //this is a property. properties are exactly how getters and setters work. 
     //you want other classes to be have access to the instance but not be able to set it. 
@@ -231,6 +233,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
         this.kitchenObject = kitchenObject;
+        if(kitchenObject != null)
+        {
+            OnPickedSomething?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public KitchenObject GetKitchenObject()

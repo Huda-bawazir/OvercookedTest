@@ -102,6 +102,7 @@ public class DeliveryManager : MonoBehaviour
 
         //No matches found!
         //the player did not deliver a correct recipe
+        OnRecipeFaild?.Invoke(this, EventArgs.Empty);   
     }
     public List<RecipeSO> GetWaitingRecipeSOList()
     {

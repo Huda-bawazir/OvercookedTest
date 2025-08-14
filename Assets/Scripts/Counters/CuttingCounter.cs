@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class CuttingCounter : BaseCounter, IHasProgress 
 {
+
+    //static event for the cutting sound 
+    public static event EventHandler OnAnyCut; 
+
     //need somekind o event to update bar imagie 
     public event EventHandler <IHasProgress.OnProgressChangedEventsArgs> OnProgressChanged;  
     
@@ -73,6 +77,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
             cuttingProgress++;
 
             OnCut?.Invoke(this, EventArgs.Empty);
+            OnAnyCut?.Invoke(this, EventArgs.Empty);    
 
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
             OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventsArgs()

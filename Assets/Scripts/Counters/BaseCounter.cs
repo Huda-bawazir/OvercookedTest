@@ -1,10 +1,15 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BaseCounter : MonoBehaviour, IKitchenObjectParent
 {
     //all the common code is written herer in this class 
 
     [SerializeField] private Transform counterTopPoint;
+
+    public static event EventHandler OnAnyPlacedObjectHere; 
+
     private KitchenObject kitchenObject;
 
     // for every function we want the child to implement in their own way. 
@@ -29,6 +34,10 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
         this.kitchenObject = kitchenObject;
+        if (kitchenObject != null)
+        {
+            OnAnyPlacedObjectHere?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public KitchenObject GetKitchenObject()
