@@ -65,6 +65,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void GameInput_OnInteractAlternateAction(object sender, EventArgs e)
     {
+        //if the game is not playing the code is going to stop excuting here. Same goes for the interaction. the  interactions will stop here.
+        if(!KitchenGameManager.Instance.IsGamePlaying()){
+            return;
+        }
         if (selectedCounter != null)
         {
             selectedCounter.InteractAlternate(this);
@@ -73,7 +77,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
-
+        if (!KitchenGameManager.Instance.IsGamePlaying())
+        {
+            return;
+        }
         //check if wwe have a selected counter 
         if (selectedCounter != null)
         {
