@@ -5,6 +5,8 @@ using System;
 
 public class GameInput : MonoBehaviour
 {
+    public static GameInput Instance {  get; private set; }
+
     //Interaction event using a delegate type. 
     public event EventHandler OnInteractAction;
     //Interaction eventhandler for cutting 
@@ -14,9 +16,14 @@ public class GameInput : MonoBehaviour
     private PlayerInputActions playerInputActions;
    
 
+    public event EventHandler OnPauseAction;
+
 
     private void Awake()     
     {
+
+        Instance = this;
+
         //create an object of the type player
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
@@ -24,7 +31,13 @@ public class GameInput : MonoBehaviour
         //interacting 
         playerInputActions.Player.Interact.performed += Interact_performed;// not calling the function but passing it as a refrence. 
         playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
+        playerInputActions.Player.Pause.performed += Pause_performed;
     
+    }
+
+    private void Pause_performed(InputAction.CallbackContext obj)
+    {
+        OnPauseAction?.Invoke(this, EventArgs.Empty); 
     }
 
     private void InteractAlternate_performed(InputAction.CallbackContext obj)

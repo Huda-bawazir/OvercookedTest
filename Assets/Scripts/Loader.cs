@@ -17,7 +17,6 @@ public static class Loader
         Loader.targetScene = targetScene;
 
         SceneManager.LoadScene(Scene.LoadingScene.ToString());
-
         
     }
 
@@ -28,6 +27,4 @@ public static class Loader
         SceneManager.LoadScene(targetScene.ToString());
     }
 
-
 }
-    

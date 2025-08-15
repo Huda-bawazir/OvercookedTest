@@ -10,13 +10,13 @@ public class GameOverUI : MonoBehaviour
     //we need to listen to an event that fires off whenever the game state changes. 
     private void Start()
     {
-        KitchenGameManager.Instance.OnstateChanged += KitchenGameManager_OnstateChanged;
+        KitchenGameManager.Instance.OnStateChanged += KitchenGameManager_OnStateChanged;
 
         Hide();
     }
     
 
-    private void KitchenGameManager_OnstateChanged(object sender, System.EventArgs e)
+    private void KitchenGameManager_OnStateChanged(object sender, System.EventArgs e)
     {
         if (KitchenGameManager.Instance.IsGameOver())
         {
