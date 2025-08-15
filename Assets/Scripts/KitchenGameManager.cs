@@ -14,9 +14,10 @@ public class KitchenGameManager : MonoBehaviour
         GameOver,
    }
     private State state;
-    private float waitingToStart = 1f;
-    private float countdownToStart = 3f;
-    private float gamePlayingToStart = 150f;
+    private float waitingToStartTimer = 1f;
+    private float countdownToStartTimer = 3f;
+    private float gamePlayingTimer; 
+    private float gamePlayingTimerMax = 10f;
 
 
 
@@ -30,24 +31,25 @@ public class KitchenGameManager : MonoBehaviour
         switch (state)
         {
             case State.WaitingToStart:
-                waitingToStart -= Time.deltaTime;
-                if(waitingToStart < 0f)
+                waitingToStartTimer -= Time.deltaTime;
+                if(waitingToStartTimer < 0f)
                 {
                     state = State.CountingDownToStart;
                     OnstateChanged?.Invoke(this, new EventArgs());
                 }
                 break;
             case State.CountingDownToStart:
-                countdownToStart -= Time.deltaTime;
-                if (countdownToStart < 0f)
+                countdownToStartTimer -= Time.deltaTime;
+                if (countdownToStartTimer < 0f)
                 {
                     state = State.GamePlaying;
+                    gamePlayingTimer = gamePlayingTimerMax; 
                     OnstateChanged?.Invoke(this, new EventArgs());
                 }
                 break;
             case State.GamePlaying:
-                gamePlayingToStart -= Time.deltaTime;
-                if (gamePlayingToStart < 0f)
+                gamePlayingTimer -= Time.deltaTime;
+                if (gamePlayingTimer < 0f)
                 {
                     state = State.GameOver;
                     OnstateChanged?.Invoke(this, new EventArgs());
@@ -77,6 +79,10 @@ public class KitchenGameManager : MonoBehaviour
     }
     public float GetCountdownToStartTimer()
     {
-        return countdownToStart; 
+        return countdownToStartTimer; 
+    }
+
+    public float GetGamePlayingTimerNormalized() {
+        return 1 - (gamePlayingTimer / gamePlayingTimerMax);
     }
 }
