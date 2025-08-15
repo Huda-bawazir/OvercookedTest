@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 public class KitchenGameManager : MonoBehaviour
 {
     public static KitchenGameManager Instance { get; private set; }
+
+    public event EventHandler OnstateChanged; 
    private enum State
     {
         WaitingToStart, 
@@ -13,7 +16,7 @@ public class KitchenGameManager : MonoBehaviour
     private State state;
     private float waitingToStart = 1f;
     private float countdownToStart = 3f;
-    private float gamePlayingToStart = 15f;
+    private float gamePlayingToStart = 150f;
 
 
 
@@ -31,6 +34,7 @@ public class KitchenGameManager : MonoBehaviour
                 if(waitingToStart < 0f)
                 {
                     state = State.CountingDownToStart;
+                    OnstateChanged?.Invoke(this, new EventArgs());
                 }
                 break;
             case State.CountingDownToStart:
@@ -38,6 +42,7 @@ public class KitchenGameManager : MonoBehaviour
                 if (countdownToStart < 0f)
                 {
                     state = State.GamePlaying;
+                    OnstateChanged?.Invoke(this, new EventArgs());
                 }
                 break;
             case State.GamePlaying:
@@ -45,6 +50,7 @@ public class KitchenGameManager : MonoBehaviour
                 if (gamePlayingToStart < 0f)
                 {
                     state = State.GameOver;
+                    OnstateChanged?.Invoke(this, new EventArgs());
                 }
                 break;
             case State.GameOver:
@@ -58,5 +64,19 @@ public class KitchenGameManager : MonoBehaviour
     public bool IsGamePlaying()
     {
         return state == State.GamePlaying;
+    }
+
+    public bool IsCountdownToStartActive()
+    {
+        return state == State.CountingDownToStart; 
+    }
+
+    public bool IsGameOver()
+    { 
+        return state == State.GameOver; 
+    }
+    public float GetCountdownToStartTimer()
+    {
+        return countdownToStart; 
     }
 }
