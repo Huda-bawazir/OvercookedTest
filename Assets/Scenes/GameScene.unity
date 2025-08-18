@@ -1546,7 +1546,7 @@ GameObject:
   - component: {fileID: 422334277}
   - component: {fileID: 422334276}
   m_Layer: 5
-  m_Name: MainMenuButton (1)
+  m_Name: ResumeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4959,8 +4959,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98fc1c4e86e9d1143b2b3173402ef9bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuButton: {fileID: 422334278}
-  resumeButton: {fileID: 1456985710}
+  mainMenuButton: {fileID: 1456985710}
+  resumeButton: {fileID: 422334278}
 --- !u!1001 &1227446383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6111,7 +6111,7 @@ GameObject:
   - component: {fileID: 1456985709}
   - component: {fileID: 1456985708}
   m_Layer: 5
-  m_Name: ResumeButton
+  m_Name: MainMenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

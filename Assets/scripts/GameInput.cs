@@ -34,6 +34,15 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Pause.performed += Pause_performed;
     
     }
+    private void OnDestroy()
+    {   
+        //Unsubscribing to the event
+        playerInputActions.Player.Interact.performed -= Interact_performed;// not calling the function but passing it as a refrence. 
+        playerInputActions.Player.InteractAlternate.performed -= InteractAlternate_performed;
+        playerInputActions.Player.Pause.performed -= Pause_performed;
+
+        playerInputActions.Dispose();
+    }
 
     private void Pause_performed(InputAction.CallbackContext obj)
     {

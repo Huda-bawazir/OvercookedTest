@@ -7,6 +7,13 @@ public class CuttingCounter : BaseCounter, IHasProgress
     //static event for the cutting sound 
     public static event EventHandler OnAnyCut; 
 
+    //clearing the static data when the scene is destroyed
+    //new because 
+    new public static void ResetStaticData()
+    {
+        OnAnyCut = null;
+    }
+
     //need somekind o event to update bar imagie 
     public event EventHandler <IHasProgress.OnProgressChangedEventsArgs> OnProgressChanged;  
     
@@ -77,6 +84,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
             cuttingProgress++;
 
             OnCut?.Invoke(this, EventArgs.Empty);
+            Debug.Log(OnAnyCut.GetInvocationList().Length);
             OnAnyCut?.Invoke(this, EventArgs.Empty);    
 
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
