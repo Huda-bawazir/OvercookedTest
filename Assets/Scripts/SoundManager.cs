@@ -1,5 +1,6 @@
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class SoundManager : MonoBehaviour
@@ -84,7 +85,14 @@ public class SoundManager : MonoBehaviour
     {
         PlaySound(audioClipRefsSO.footsteps, position, volume); 
     }
-    
+    public void PlayCountdownSound()
+    {
+        PlaySound(audioClipRefsSO.warning, Vector3.zero, volume);
+    }public void PlaywarningSound(Vector3 position)
+    {
+        PlaySound(audioClipRefsSO.warning, position);
+    }
+
     //function to modify the volume
     public void ChangeVolume()
     {

@@ -25,6 +25,7 @@ public class MusicManager : MonoBehaviour
         {
             volume = 0f;
         }
+        audioSource.volume = volume;
         PlayerPrefs.SetFloat(PLAYER_PREFS_MUSIC_VOLUME, volume);
         PlayerPrefs.Save();
     }

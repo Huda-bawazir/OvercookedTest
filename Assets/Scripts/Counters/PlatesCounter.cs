@@ -21,7 +21,7 @@ public class PlatesCounter : BaseCounter
             spawnPlateTimer = 0f;
 
             //spwan a demo ( a number amount of plates ) 
-            if (platesSpwanedAmount < platesSpwanedAmountMax)
+            if (KitchenGameManager.Instance.IsGamePlaying() && platesSpwanedAmount < platesSpwanedAmountMax)
             {
                 platesSpwanedAmount++;
                 OnPlateSpawned?.Invoke(this, new EventArgs());

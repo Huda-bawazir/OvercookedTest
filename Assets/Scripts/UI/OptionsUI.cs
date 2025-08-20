@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,8 +27,9 @@ public class OptionsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI interactText;     
     [SerializeField] private TextMeshProUGUI interactAltText;     
     [SerializeField] private TextMeshProUGUI PauseText;
-    [SerializeField] private Transform pressToRebindKeyTransform; 
+    [SerializeField] private Transform pressToRebindKeyTransform;
 
+     private Action onCloseButtonAction;
 
     private void Awake()
     {
@@ -44,7 +46,8 @@ public class OptionsUI : MonoBehaviour
 
         });
         closeButton.onClick.AddListener(() => {
-            Hide(); 
+            Hide();
+            onCloseButtonAction();
         });
         moveUpButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Move_Up);});
         moveDownButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Move_Down);});
@@ -52,12 +55,13 @@ public class OptionsUI : MonoBehaviour
         moveRightButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Move_Right);});
         interactButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Interact);});
         interactAltButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.InteractAlternate);});
-        pauseButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Puase);});
+        pauseButton.onClick.AddListener(() => { RebindBinding(GameInput.Binding.Pause);});
     }
     private void Start()
     {
         KitchenGameManager.Instance.OnGameUnpause += KitchenGameManager_OnGameUnpause;
         UpdateVisuals();
+
         HidePressToRebindKey();
         Hide(); 
     }
@@ -79,11 +83,12 @@ public class OptionsUI : MonoBehaviour
         moveDownText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Move_Down);
         interactText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Interact);
         interactAltText.text = GameInput.Instance.GetBindingText(GameInput.Binding.InteractAlternate);
-        PauseText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Puase);
+        PauseText.text = GameInput.Instance.GetBindingText(GameInput.Binding.Pause);
 
     }
-    public void Show()
+    public void Show(Action onCloseeButtonAction)
     {
+        this.onCloseButtonAction = onCloseeButtonAction;
         gameObject.SetActive(true);
     }
     private void Hide()
@@ -97,8 +102,11 @@ public class OptionsUI : MonoBehaviour
     private void RebindBinding (GameInput.Binding binding)
     {
         ShowPressToRebindKey();
-        GameInput.Instance.RebindBinding(binding, () => { HidePressToRebindKey(); });
-        UpdateVisuals();
+        GameInput.Instance.RebindBinding(binding, () => {
+            HidePressToRebindKey();
+            UpdateVisuals();
+        });
+        
     }
 
 }
