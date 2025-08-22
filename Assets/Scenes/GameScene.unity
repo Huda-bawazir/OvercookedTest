@@ -7352,6 +7352,22 @@ PrefabInstance:
       propertyPath: 'fryingRecipeSOArray.Array.data[2]'
       value: 
       objectReference: {fileID: 11400000, guid: cb5868ddf10c9ba4da44347ebd64a9bf, type: 2}
+    - target: {fileID: 3367003651490845211, guid: 6857a139266a1eb4386ecf8cebd32692, type: 3}
+      propertyPath: skewerFryingRecipeSOArray.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367003651490845211, guid: 6857a139266a1eb4386ecf8cebd32692, type: 3}
+      propertyPath: skewerBurningRecipeSOArray.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367003651490845211, guid: 6857a139266a1eb4386ecf8cebd32692, type: 3}
+      propertyPath: 'skewerFryingRecipeSOArray.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 92efdc7fd13b89b4793833368a63eb73, type: 2}
+    - target: {fileID: 3367003651490845211, guid: 6857a139266a1eb4386ecf8cebd32692, type: 3}
+      propertyPath: 'skewerBurningRecipeSOArray.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 18182eb2d7023764a8c6faedf7fd91f8, type: 2}
     - target: {fileID: 6278795503696946959, guid: 6857a139266a1eb4386ecf8cebd32692, type: 3}
       propertyPath: m_Name
       value: GrillCounter
