@@ -20,8 +20,7 @@ public class PlatesCounterVisual : MonoBehaviour
     private void Start()
     {
         platesCounter.OnPlateSpawned += PlatesCounter_OnPlateSpawned;
-        platesCounter.OnPlateRemoved += PlatesCounter_OnPlateRemoved
-            ;
+        platesCounter.OnPlateRemoved += PlatesCounter_OnPlateRemoved;
     }
 
     private void PlatesCounter_OnPlateRemoved(object sender, System.EventArgs e)

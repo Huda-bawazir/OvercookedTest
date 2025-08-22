@@ -161,39 +161,39 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         //getting the input vector from the GameInput script 
         Vector2 inputVector2 = gameInput.GetMovementVector();
         // Move the player based on the input vector
-        Vector3 moveDirection = new Vector3(inputVector2.x, 0f, inputVector2.y).normalized;
+        Vector3 moveDir = new Vector3(inputVector2.x, 0f, inputVector2.y).normalized;
 
 
         //check if any object is in the way by firing a raycast
         float moveDistance = moveSpeed * Time.deltaTime;
 
         //returns a bool 
-        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDirection, moveDistance);
+        bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDir, moveDistance);
 
         if (!canMove)
         {
             //Cannot move towards moveDirection 
 
             //Attempt only x movement 
-            Vector3 moveDirectionX = new Vector3(moveDirection.x, 0, 0).normalized;
-            canMove = (moveDirection.x < - .5f || moveDirection.x > +.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDirectionX, moveDistance);
+            Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
+            canMove = (moveDir.x < - .5f || moveDir.x > +.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDirX, moveDistance);
             if (canMove)
             {
                 //can only move on the x
-                moveDirection = moveDirectionX;
+                moveDir = moveDirX;
             }
             else
             {
                 //cannot move only on X 
 
                 //Atempt only Z movement 
-                Vector3 moveDirectionZ = new Vector3(0, 0, moveDirection.z).normalized;
-                canMove = (moveDirection.z < -.5f || moveDirection.z > +.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDirectionZ, moveDistance);
+                Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
+                canMove = (moveDir.z < -.5f || moveDir.z > +.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * height, radius, moveDirZ, moveDistance);
 
                 if (canMove)
                 {
                     //can only move z 
-                    moveDirection = moveDirectionZ;
+                    moveDir = moveDirZ;
                 }
                 else
                 {
@@ -207,15 +207,15 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         }
         if (canMove)
         {
-            transform.position += moveDirection * moveDistance;
+            transform.position += moveDir * moveDistance;
         }
 
         //Math function called lurp/slerp, it helsps with the interpolating 
         float rotateSpeed = 10f;
         //interpolate between and b based on t
-        transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
+        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
 
-        isWalking = moveDirection != Vector3.zero;
+        isWalking = moveDir != Vector3.zero;
 
         //two methods that work. 
         // transform.eulerAngles

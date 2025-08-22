@@ -77,6 +77,7 @@ public class KitchenGameManager : MonoBehaviour
                 }
                 break;
             case State.GameOver:
+                Invoke(nameof(RestartGame), 5f);
                 break;
             default:
                 break;
@@ -120,5 +121,9 @@ public class KitchenGameManager : MonoBehaviour
             Time.timeScale = 1f;
             OnGameUnpause?.Invoke(this, EventArgs.Empty);   
         }
+    }
+    private void RestartGame()
+    {
+        Loader.Load(Loader.Scene.MainMenu); 
     }
 }

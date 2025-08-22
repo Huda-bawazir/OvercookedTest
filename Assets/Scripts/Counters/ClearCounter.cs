@@ -40,7 +40,7 @@ public class ClearCounter : BaseCounter, IKitchenObjectParent
                     //Player is not holding a plate but something else. 
                     if(GetKitchenObject().TryGetPlate(out plateKitchenObject))
                     {
-                        //If the counter is hodling a plate \
+                        //If the counter is hodling a plate 
                         if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectSO()))
                         {
                             player.GetKitchenObject().DestroySelf();
@@ -54,6 +54,42 @@ public class ClearCounter : BaseCounter, IKitchenObjectParent
                 //player is not arying something 
                 GetKitchenObject().SetKitchenObjectParent(player); 
             }
+
+            //Grilled Meat
+            if (player.HasKitchenObject())
+            {
+                //The player is carying a somthing
+                //check if the player is carying a skewer. 
+                if (player.GetKitchenObject().TryGetSkewer(out SkewerKitchenObject skewerKitchenObject))
+                {  //player is holding a skewer
+                   //add it to the list in skewerKitchenObject.
+                    if (skewerKitchenObject.TryAddIngredient(GetKitchenObject().GetKitchenObjectSO()))
+                    {
+                        //destroy it from the kitchen counter to add it to the plate 
+                        GetKitchenObject().DestroySelf();
+                    }
+                }
+                else
+                {
+                    //Player is not holding a skewer but something else. 
+                    if (GetKitchenObject().TryGetSkewer(out skewerKitchenObject))
+                    {
+                        //If the counter is hodling a plate 
+                        if (skewerKitchenObject.TryAddIngredient(player.GetKitchenObject().GetKitchenObjectSO()))
+                        {
+                            player.GetKitchenObject().DestroySelf();
+                        }
+                    }
+
+                }
+
+            }
+            else
+            {
+                //player is not arying something 
+                GetKitchenObject().SetKitchenObjectParent(player);
+            }
+
         }
     }
 

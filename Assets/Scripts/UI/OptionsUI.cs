@@ -103,7 +103,7 @@ public class OptionsUI : MonoBehaviour
         this.onCloseButtonAction = onCloseeButtonAction;
         gameObject.SetActive(true);
         //if it doesnt select in the options
-        //soundEffectButton.Select();
+        soundEffectButton.Select();
     }
     private void Hide()
     {

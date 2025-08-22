@@ -60,6 +60,23 @@ public class KitchenObject : MonoBehaviour
             return false;
         }
     }
+    public bool TryGetSkewer(out SkewerKitchenObject skewerKitchenObject)
+    {
+        //if this is a object is a skewer kitchen Object. 
+        if (this is SkewerKitchenObject)
+        {
+            //if it is, assign the value as in cast it as a skewer kitchen object.
+            skewerKitchenObject = this as SkewerKitchenObject;
+            return true;
+        }
+        else
+        {
+            skewerKitchenObject = null;
+            //if it's not a plate return false
+            return false;
+        }
+    }
+
 
     public static KitchenObject SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent kitchenObjectParent)
     {

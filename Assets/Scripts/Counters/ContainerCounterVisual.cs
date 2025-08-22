@@ -5,7 +5,7 @@ public class ContainerCounterVisual : MonoBehaviour
     //making a constant so that dealing with strings become better
     private string OPEN_CLOSE = "OpenClose"; 
      //refrence needed for when the player grabs the object from the countainer  
-    [SerializeField] private ContainerCounter containercounter; 
+    [SerializeField] private ContainerCounter containerCounter; 
 
     private Animator animator;
 
@@ -17,7 +17,7 @@ public class ContainerCounterVisual : MonoBehaviour
     //on start because we are using an external refrence
     private void Start()
     {
-        containercounter.OnPlayerGrabbedObject += Containercounter_OnPlayerGrabbedObject;
+        containerCounter.OnPlayerGrabbedObject += Containercounter_OnPlayerGrabbedObject;
         
     }
 
