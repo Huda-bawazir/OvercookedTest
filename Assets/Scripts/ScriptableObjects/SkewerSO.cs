@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "skewerSO")]
-public class skewerSO : ScriptableObject
+public class SkewerSO : ScriptableObject
 {
     public List<KitchenObjectSO> kitchenObjectSOList; 
     public string recipeName;   

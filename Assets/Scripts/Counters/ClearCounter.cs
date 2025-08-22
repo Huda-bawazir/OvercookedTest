@@ -59,6 +59,14 @@ public class ClearCounter : BaseCounter, IKitchenObjectParent
                             kitchenObject.DestroySelf();
                         }
                     }
+                    else if (GetKitchenObject().TryGetSkewer(out skewerKitchenObject))
+                    {
+                        //If the counter is hodling a skewer 
+                        if (skewerKitchenObject.TryAddIngredient(kitchenObject.GetKitchenObjectSO()))
+                        {
+                            kitchenObject.DestroySelf();
+                        }
+                    }
 
                 }
             }

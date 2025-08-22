@@ -21,16 +21,16 @@ public class GrillCounter : BaseCounter, IHasProgress
         Burned,
     }
 
-    [SerializeField] private FryingRecipeSO[] fryingRecipeSOArray;
-    [SerializeField] private BurningRecipeSO[] burningRecipeSOArray;
+    [SerializeField] private SkewerFryingRecipeSO[] skewerFryingRecipeSOArray;
+    [SerializeField] private SkewerBurningRecipeSO[] skewerBurningRecipeSOArray;
 
 
     private State state;
     private float fryingTimer;
     private float burningTimer;
 
-    private FryingRecipeSO fryingRecipeSO;
-    private BurningRecipeSO burningRecipeSO;
+    private SkewerFryingRecipeSO skewerFryingRecipeSO;
+    private SkewerBurningRecipeSO skewerBurningRecipeSO;
 
     private void Start()
     {
@@ -50,22 +50,22 @@ public class GrillCounter : BaseCounter, IHasProgress
                     //firing off the event. 
                     OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventsArgs
                     {
-                        progressNormalized = fryingTimer / fryingRecipeSO.fryingProgressMax,
+                        progressNormalized = fryingTimer / skewerFryingRecipeSO.fryingProgressMax,
                     });
-                    if (fryingTimer > fryingRecipeSO.fryingProgressMax)
+                    if (fryingTimer > skewerFryingRecipeSO.fryingProgressMax)
                     {
                         //fried
                         GetKitchenObject().DestroySelf();
 
                         //spwan the cooked object. 
-                        KitchenObject.SpawnKitchenObject(fryingRecipeSO.output, this);
+                        KitchenObject.SpawnKitchenObject(skewerFryingRecipeSO.output, this);
 
 
                         //Modify the state
                         state = State.Fried;
                         burningTimer = 0f;
 
-                        burningRecipeSO = GetBurningRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
+                        skewerBurningRecipeSO = GetBurningRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
 
                         OnStateChanged?.Invoke(this, new OnstateChangedEventsArgs
                         {
@@ -78,15 +78,15 @@ public class GrillCounter : BaseCounter, IHasProgress
                     //firing off the event
                     OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventsArgs
                     {
-                        progressNormalized = burningTimer / burningRecipeSO.burningProgressMax,
+                        progressNormalized = burningTimer / skewerBurningRecipeSO.burningProgressMax,
                     });
-                    if (burningTimer > burningRecipeSO.burningProgressMax)
+                    if (burningTimer > skewerBurningRecipeSO.burningProgressMax)
                     {
                         //fried
                         GetKitchenObject().DestroySelf();
 
                         //spwan the cooked object. 
-                        KitchenObject.SpawnKitchenObject(burningRecipeSO.output, this);
+                        KitchenObject.SpawnKitchenObject(skewerBurningRecipeSO.output, this);
 
                         //Modify the state
                         state = State.Burned;
@@ -116,26 +116,30 @@ public class GrillCounter : BaseCounter, IHasProgress
             //if there is no ibject then check the player himself, if he has object. 
             if (player.HasKitchenObject())
             {
-                if (HasRecepieWithInput(player.GetKitchenObject().GetKitchenObjectSO()))
+                SkewerKitchenObject skewerKitchenObject;
+                if (player.GetKitchenObject().TryGetSkewer(out skewerKitchenObject))
                 {
-                    //player is carying something that can be fried
-                    player.GetKitchenObject().SetKitchenObjectParent(this);
-                    fryingRecipeSO = GetFryingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
-
-                    //when the player drops something that can be friend Set it to a different state as well as reset a timer
-                    state = State.Frying;
-                    fryingTimer = 0f;
-                    OnStateChanged?.Invoke(this, new OnstateChangedEventsArgs
+                    var currentItems = skewerKitchenObject.GetKitchenObjectSOList();
+                    if(currentItems.Count == 3)
                     {
-                        state = state
-                    });
+                        //player is carying something that can be fried
+                        player.GetKitchenObject().SetKitchenObjectParent(this);
+                        skewerFryingRecipeSO = GetFryingRecipeSOWithInput(GetKitchenObject().GetKitchenObjectSO());
 
-                    OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventsArgs
-                    {
-                        progressNormalized = fryingTimer / fryingRecipeSO.fryingProgressMax,
-                    });
+                        //when the player drops something that can be friend Set it to a different state as well as reset a timer
+                        state = State.Frying;
+                        fryingTimer = 0f;
+                        OnStateChanged?.Invoke(this, new OnstateChangedEventsArgs
+                        {
+                            state = state
+                        });
+
+                        OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventsArgs
+                        {
+                            progressNormalized = fryingTimer / skewerFryingRecipeSO.fryingProgressMax,
+                        });
+                    }
                 }
-                //player is carrying something, drop the object from the player to the counter 
             }
             else
             {
@@ -191,16 +195,16 @@ public class GrillCounter : BaseCounter, IHasProgress
     }
 
     //function to check if the object the player is carrying is a scriptable object recipe ( a part of recipe CuttingRecipeSO
-    private bool HasRecepieWithInput(KitchenObjectSO inputKitchenObejctSO)
+    private bool HasRecepieWithInput(SkewerSO skewerSO)
     {
-        FryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObejctSO);
+        SkewerFryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObejctSO);
         return fryingRecipeSO;
     }
 
     //functoion tp retun the output of the recipe 
     private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObejctSO)
     {
-        FryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObejctSO);
+        SkewerFryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObejctSO);
         if (fryingRecipeSO != null)
         {
             return fryingRecipeSO.output;
@@ -212,9 +216,9 @@ public class GrillCounter : BaseCounter, IHasProgress
     }
 
     //Function to cycle through the array and retun the kitchenobject that matches the one in the recipe. 
-    private FryingRecipeSO GetFryingRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO)
+    private SkewerFryingRecipeSO GetFryingRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO)
     {
-        foreach (FryingRecipeSO fryingRecipeSO in fryingRecipeSOArray)
+        foreach (SkewerFryingRecipeSO fryingRecipeSO in skewerFryingRecipeSOArray)
         {
             if (fryingRecipeSO.input == inputKitchenObjectSO)
             {
@@ -226,9 +230,9 @@ public class GrillCounter : BaseCounter, IHasProgress
         }
         return null;
     }
-    private BurningRecipeSO GetBurningRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO)
+    private SkewerBurningRecipeSO GetBurningRecipeSOWithInput(KitchenObjectSO inputKitchenObjectSO)
     {
-        foreach (BurningRecipeSO burningRecipeSO in burningRecipeSOArray)
+        foreach (SkewerBurningRecipeSO burningRecipeSO in skewerBurningRecipeSOArray)
         {
             if (burningRecipeSO.input == inputKitchenObjectSO)
             {
@@ -241,11 +245,10 @@ public class GrillCounter : BaseCounter, IHasProgress
         return null;
 
     }
-
     public bool IsFried()
     {
         return state == State.Fried;
     }
- 
+
 } 
 
