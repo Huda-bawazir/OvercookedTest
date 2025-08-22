@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 130bf2dbf449dc542a8c3853b745fdec, type: 3}
-  m_Name: SkewerFyingRecipeSO
+  m_Name: SkewerFryingRecipeSO
   m_EditorClassIdentifier: 
-  input: {fileID: 11400000, guid: b4a06069065ede14daf571f7b4d4f87b, type: 2}
-  output: {fileID: 11400000, guid: 88c974b69a0b4574194054ef6b36096f, type: 2}
+  input: {fileID: 11400000, guid: 13879c95a730bf345bf6283754df8563, type: 2}
+  output: {fileID: 11400000, guid: c1f8c056a9fe7844c8a177a8f0042ff5, type: 2}
   fryingProgressMax: 3

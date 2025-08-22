@@ -33,6 +33,7 @@ public class KitchenObject : MonoBehaviour
         //When setting the lcear counter to a differnt one, the object should automatically transport. 
         transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
         transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
     public IKitchenObjectParent GetKitcheObjectParent()
     {

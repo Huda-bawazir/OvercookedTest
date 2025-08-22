@@ -194,14 +194,6 @@ public class GrillCounter : BaseCounter, IHasProgress
 
     }
 
-    //function to check if the object the player is carrying is a scriptable object recipe ( a part of recipe CuttingRecipeSO
-    private bool HasRecepieWithInput(SkewerSO skewerSO)
-    {
-        SkewerFryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObejctSO);
-        return fryingRecipeSO;
-    }
-
-    //functoion tp retun the output of the recipe 
     private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObejctSO)
     {
         SkewerFryingRecipeSO fryingRecipeSO = GetFryingRecipeSOWithInput(inputKitchenObejctSO);
