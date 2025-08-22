@@ -7,7 +7,8 @@ public class SkewerCounterVisual : MonoBehaviour
     [SerializeField] private PlatesCounter platesCounter;
     [SerializeField] private Transform counterTopPoint;
     [SerializeField] private Transform SkewerVisualPrefab;
-
+    public float plateOffsetY = .1f;
+    public Vector3 Offset;
 
     private List<GameObject> SkewerVisualGameObjectList;
 
@@ -21,25 +22,24 @@ public class SkewerCounterVisual : MonoBehaviour
 
     private void Start()
     {
-        platesCounter.OnPlateSpawned += PlatesCounter_OnPlateSpawned;
-        platesCounter.OnPlateRemoved += PlatesCounter_OnPlateRemoved;
+        platesCounter.OnPlateSpawned += SkewerCounter_OnPlateSpawned;
+        platesCounter.OnPlateRemoved += SkewerCounter_OnPlateRemoved;
     }
 
-    private void PlatesCounter_OnPlateRemoved(object sender, System.EventArgs e)
+    private void SkewerCounter_OnPlateRemoved(object sender, System.EventArgs e)
     {
         GameObject plateGameObject = SkewerVisualGameObjectList[SkewerVisualGameObjectList.Count - 1];
         SkewerVisualGameObjectList.Remove(plateGameObject);
         Destroy(plateGameObject);
     }
 
-    private void PlatesCounter_OnPlateSpawned(object sender, System.EventArgs e)
+    private void SkewerCounter_OnPlateSpawned(object sender, System.EventArgs e)
     {
         //spwaning the prefab 
         Transform skewerVisualTransform = Instantiate(SkewerVisualPrefab, counterTopPoint);
 
-        float plateOffsetY = .1f;
-        skewerVisualTransform.localPosition = new Vector3(plateOffsetY * SkewerVisualGameObjectList.Count, 0, 0);
-
+        skewerVisualTransform.localPosition = new Vector3(plateOffsetY * SkewerVisualGameObjectList.Count, 0, 0) + Offset;
+        
         SkewerVisualGameObjectList.Add(skewerVisualTransform.gameObject);
     }
 }

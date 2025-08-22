@@ -8,32 +8,33 @@ public class KitchenObject : MonoBehaviour
     [SerializeField] private KitchenObjectSO kitchenObjectSO;
 
     //to helpe make sure the kitchen object knows where it is. 
-    private IKitchenObjectParent kitchenObjectParent; 
+    private IKitchenObjectParent kitchenObjectParent;
 
     public KitchenObjectSO GetKitchenObjectSO() { return kitchenObjectSO; }
 
-    public void SetKitchenObjectParent (IKitchenObjectParent kitchenObjectParent)
+    public void SetKitchenObjectParent(IKitchenObjectParent kitchenObjectParent)
     {
         //clear the current parent if its not null
         if (this.kitchenObjectParent != null)
         {
-            this.kitchenObjectParent.ClearkitchenObject(); 
+            this.kitchenObjectParent.ClearkitchenObject();
         }
 
         //set the kitchen object for the parent. 
         this.kitchenObjectParent = kitchenObjectParent;
 
-        if (kitchenObjectParent.HasKitchenObject() ) {
+        if (kitchenObjectParent.HasKitchenObject())
+        {
 
-            Debug.LogError("Counter already has a kitchenObject"); 
+            Debug.LogError("Counter already has a kitchenObject");
         }
-        kitchenObjectParent.SetKitchenObject(this); 
+        kitchenObjectParent.SetKitchenObject(this);
 
         //When setting the lcear counter to a differnt one, the object should automatically transport. 
         transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
         transform.localPosition = Vector3.zero;
     }
-    public IKitchenObjectParent GetKitcheObjectParent ()
+    public IKitchenObjectParent GetKitcheObjectParent()
     {
         return kitchenObjectParent;
     }
@@ -48,14 +49,15 @@ public class KitchenObject : MonoBehaviour
     public bool TryGetPlate(out PlateKitchenObject plateKitchenObject)
     {
         //if this is a object is a plate kitchen Object. 
-         if (this is PlateKitchenObject)
+        if (this is PlateKitchenObject)
         {
             //if it is, assign the value as in cast it as a plate kitchen object.
             plateKitchenObject = this as PlateKitchenObject;
             return true;
-        } else
+        }
+        else
         {
-            plateKitchenObject=null;
+            plateKitchenObject = null;
             //if it's not a plate return false
             return false;
         }
@@ -81,11 +83,11 @@ public class KitchenObject : MonoBehaviour
     public static KitchenObject SpawnKitchenObject(KitchenObjectSO kitchenObjectSO, IKitchenObjectParent kitchenObjectParent)
     {
         //this will autmoatically span the object and  set the parent. 
-        Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab);
+        Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.Prefab).transform;
 
         KitchenObject kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
 
-        kitchenObject.SetKitchenObjectParent(kitchenObjectParent); 
+        kitchenObject.SetKitchenObjectParent(kitchenObjectParent);
 
         return kitchenObject;
     }

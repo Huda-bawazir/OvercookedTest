@@ -21,7 +21,7 @@ public class KitchenGameManager : MonoBehaviour
     //modify it to start when the playyer interacts with the game.
     private float countdownToStartTimer = 3f;
     private float gamePlayingTimer; 
-    private float gamePlayingTimerMax = 30f;
+    public float gamePlayingTimerMax = 30f;
     private bool isGamePaused = false; 
 
 
@@ -82,7 +82,6 @@ public class KitchenGameManager : MonoBehaviour
             default:
                 break;
         }
-        Debug.Log(state);
     }
 
     public bool IsGamePlaying()
