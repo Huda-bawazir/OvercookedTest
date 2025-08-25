@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SkewerFrying
   m_EditorClassIdentifier: 
   Prefab: {fileID: 2969328895829761192, guid: 97d399854eae8784489617d437a071bd, type: 3}
-  sprite: {fileID: 21300000, guid: 6820e50a72696664cb1a9b5484ecee33, type: 3}
+  sprite: {fileID: 21300000, guid: f1f50c7ef90b19741b26f2040806cf56, type: 3}
   ObjectName: Skewer

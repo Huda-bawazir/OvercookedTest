@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5446f3c9491ec0c44bab29006a25c873, type: 3}
-  m_Name: Skewer
+  m_Script: {fileID: 11500000, guid: 622db3893ac63cf48a86153f37198ce1, type: 3}
+  m_Name: Tomato-TomatoHalf
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 5785118043055687836, guid: 75161ef95ce94c84e9dc4fe57c25bcca, type: 3}
-  sprite: {fileID: 21300000, guid: aa1bacc24dde76e47b2ec0dd4e82385b, type: 3}
-  ObjectName: Skewer
+  input: {fileID: 11400000, guid: f04c0ec2e1de77540a360a1867de3693, type: 2}
+  output: {fileID: 11400000, guid: 37a5ed3a14544d944a504c0be1f42975, type: 2}
+  progressCuttingMax: 1
