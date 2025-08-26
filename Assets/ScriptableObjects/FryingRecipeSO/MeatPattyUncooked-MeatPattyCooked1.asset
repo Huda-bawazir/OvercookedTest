@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 896a08d3ef3076147b8549e6722b0e9e, type: 3}
-  m_Name: MeatPattyUncooked-MeatPattyCooked
+  m_Script: {fileID: 11500000, guid: a23d0412715c8754dac383af201467c7, type: 3}
+  m_Name: MeatPattyUncooked-MeatPattyCooked1
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: d89d9b986a5c909478c27975d88785a1, type: 2}
   output: {fileID: 11400000, guid: bbf9797d46efee1488d5d208ca6f0898, type: 2}

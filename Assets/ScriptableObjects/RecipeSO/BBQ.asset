@@ -13,8 +13,5 @@ MonoBehaviour:
   m_Name: BBQ
   m_EditorClassIdentifier: 
   kitchenObjectSOList:
-  - {fileID: 11400000, guid: 67e5c5f05b5b9c748ab66e0115b58719, type: 2}
-  - {fileID: 11400000, guid: 94d939f639e00eb4ca22c33fd6f0cf31, type: 2}
-  - {fileID: 11400000, guid: 03b234b2179a0b843ab423fd1dfb541e, type: 2}
-  - {fileID: 11400000, guid: 03b234b2179a0b843ab423fd1dfb541e, type: 2}
+  - {fileID: 11400000, guid: c1f8c056a9fe7844c8a177a8f0042ff5, type: 2}
   recipeName: BBQ
